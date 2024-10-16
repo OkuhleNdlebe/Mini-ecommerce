@@ -14,6 +14,9 @@
         :key="item.id"
         class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center"
       >
+        <!-- Display item image -->
+        <img :src="item.image" alt="Product Image" class="w-48 h-48 object-cover mb-4" />
+
         <h2 class="text-xl font-semibold mb-2 text-center">{{ item.name }}</h2>
         <p class="text-gray-600 text-sm mb-2">Quantity: {{ item.quantity }}</p>
         <p class="text-lg font-bold text-gray-800 mb-2">Price: ${{ item.price }}</p>

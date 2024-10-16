@@ -21,7 +21,7 @@ class ProductFactory extends Factory
             'description' => $this->faker->sentence(),
             'price' => $this->faker->randomFloat(2, 10, 200), // Random price between 10 and 200
             'quantity' => $this->faker->numberBetween(1, 100), // Random quantity
-            'image' => $this->faker->imageUrl(640, 480, 'product', true), // Random image URL
+            'image' => 'https://picsum.photos/640/480?random=' . rand(1, 1000), // Random image from Picsum
         ];
     }
 }

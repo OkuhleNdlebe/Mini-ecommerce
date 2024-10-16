@@ -35,8 +35,10 @@ Route::middleware('auth')->group(function () {
     })->name('cart.index');
 });
 
-// Product API routes
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+// Product  routes
+Route::get('/products', function () {
+    return Inertia::render('ProductsPage');
+})->name('products.index');
 
 // Wow this took me 3 hours to figure it out 
 // Cart API routes for AJAX calls from Vue frontend
