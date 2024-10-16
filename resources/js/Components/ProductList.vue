@@ -69,8 +69,21 @@ export default {
         });
     },
     addToCart(product) {
-      console.log('Adding to cart:', product);
-      // Implement add to cart functionality
+      const payload = {
+        product_id: product.id,
+        quantity: product.quantity
+      };
+
+      axios
+        .post('/api/cart/add', payload)
+        .then((response) => {
+          // Handle success - you could show a message or notification
+          console.log(response.data.message);
+        })
+        .catch((error) => {
+          // Handle error
+          console.error('Error adding to cart:', error);
+        });
     }
   },
   mounted() {
@@ -78,4 +91,3 @@ export default {
   }
 };
 </script>
-

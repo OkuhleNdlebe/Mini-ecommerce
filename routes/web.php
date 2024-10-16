@@ -7,9 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 
-
-
-
+// Home route
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -19,26 +17,34 @@ Route::get('/', function () {
     ]);
 });
 
+// Dashboard route
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Authenticated routes
 Route::middleware('auth')->group(function () {
+    // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-     // Cart route, authenticated user will see their cart
-    // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+    // Cart page rendering using Inertia
+    Route::get('/cart', function () {
+        return Inertia::render('CartPage'); // Render CartPage Vue component via Inertia
+    })->name('cart.index');
 });
-Route::get('/products', function () {
-    return Inertia::render('ProductsPage');
-})->name('products.index');
 
+// Product API routes
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
-//Route::get('/cart', [CartController::class, 'index'])->middleware('auth')->name('cart.index');
+// Wow this took me 3 hours to figure it out 
+// Cart API routes for AJAX calls from Vue frontend
+Route::middleware('auth')->group(function () {
+    Route::get('/api/cart', [CartController::class, 'show'])->name('api.cart.show');    // Fetch cart contents
+    Route::post('/api/cart/add', [CartController::class, 'add'])->name('api.cart.add'); // Add product to cart
+    Route::delete('/api/cart/remove/{product}', [CartController::class, 'remove'])->name('api.cart.remove'); // Remove product from cart
+});
 
-
-
-//Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-
+// Authentication routes
 require __DIR__.'/auth.php';
